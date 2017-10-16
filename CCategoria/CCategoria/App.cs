@@ -6,7 +6,7 @@ namespace CCategoria
     public class App
     {
         private IDbConnection connection;
-        public App()
+        private App()
         {
         }
 
