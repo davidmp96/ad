@@ -4,47 +4,69 @@ using System;
 using System.Data;
 using CCategoria;
 
-public partial class MainWindow : Gtk.Window
-{
+public partial class MainWindow : Gtk.Window {
 
-    public MainWindow() : base(Gtk.WindowType.Toplevel)
-    {
+    public MainWindow() : base(Gtk.WindowType.Toplevel) {
 
         Build();
+        Title = "Categoria";
+        deleteAction.Sensitive = false;
+
         //CONEXION CON LA BASE DE DATOS
         string connectionString = "server=localhost;database=dbprueba;user=root;password=sistemas";
         App.Instance.Connection = new MySqlConnection(connectionString);
         App.Instance.Connection.Open();
 
-		//AÑADIMOS COLUMNAS AL TREEVIEW
-		treeView.AppendColumn("id", new CellRendererText(), "text", 0);
-		treeView.AppendColumn("nombre", new CellRendererText(), "text", 1);
-		ListStore listStore = new ListStore(typeof(string), typeof(string));
-		treeView.Model = listStore;
-        //listStore.AppendValues("1", "cat. 1"); FORMA MANUAL DE INTRODUCIR
-        //listStore.AppendValues("2", "cat. 2"); LOS DATOS EN LA TABLA.
+        //AÑADIMOS COLUMNAS AL TREEVIEW
+        treeView.AppendColumn("id", new CellRendererText(), "text", 0);
+        treeView.AppendColumn("nombre", new CellRendererText(), "text", 1);
+        ListStore listStore = new ListStore(typeof(string), typeof(string));
+        treeView.Model = listStore;
 
         fillListStore(listStore);
 
-        //CÓDIGO INTRODUCIDO EN EL BOTÓN NUEVA
+        //PARA BLOQUEAR EL BOTÓN DELETE SINO ESTÁ SELECCIONADA NINGUNA FILA
+        treeView.Selection.Changed += delegate {
+            bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
+            deleteAction.Sensitive = hasSelected;
+        };
+
+        //BOTÓN NUEVA
         newAction.Activated += delegate {
             new CategoriaWindow();
         };
 
-        //CÓDIGO INTRODUCIDO EN EL BOTÓN REFRESH LLAMANDO AL MÉTODO refactorizado fillListStore
+        //BOTÓN REFRESH 
         refreshAction.Activated += delegate {
             fillListStore(listStore);
-		};
+        };
+
+        //BOTÓN DELETE
+        deleteAction.Activated += delegate {
+            if (WindowHelper.Confirm(this, "¿Quieres eliminar el registro?")) {
+                object id = getId();
+                IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
+                dbCommand.CommandText = "delete from categoria where id = @id";
+                DbCommandHelper.AddParameter(dbCommand, "id", id);
+                dbCommand.ExecuteNonQuery();
+            }
+        };
+    }
+
+    private object getId() {
+        TreeIter treeIter;
+        treeView.Selection.GetSelected(out treeIter);
+        return treeView.Model.GetValue(treeIter, 0);
     }
 
     private void fillListStore(ListStore listStore) {
         listStore.Clear();
-		IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
-		dbCommand.CommandText = "select * from categoria order by id";
-		IDataReader dataReader = dbCommand.ExecuteReader();
-		while (dataReader.Read()) 
-			listStore.AppendValues(dataReader["id"].ToString(), dataReader["nombre"]);
-		dataReader.Close();
+        IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
+        dbCommand.CommandText = "select * from categoria order by id";
+        IDataReader dataReader = dbCommand.ExecuteReader();
+        while (dataReader.Read())
+            listStore.AppendValues(dataReader["id"].ToString(), dataReader["nombre"]);
+        dataReader.Close();
     }
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a) {

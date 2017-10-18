@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Data;
 
-namespace CCategoria
-{
-    public partial class CategoriaWindow : Gtk.Window
-    {
+namespace CCategoria {
+    
+    public partial class CategoriaWindow : Gtk.Window {
+        
         public CategoriaWindow() :
-                base(Gtk.WindowType.Toplevel)
-        {
+                base(Gtk.WindowType.Toplevel) {
             this.Build();
 
             saveAction.Activated += delegate {

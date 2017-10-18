@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Data;
 
-namespace CCategoria
-{
-    public class App
-    {
+namespace CCategoria {
+    
+    public class App {
+        
         private IDbConnection connection;
-        private App()
-        {
+        private App() {
         }
 
         private static App instance = new App();

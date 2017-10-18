@@ -3,10 +3,10 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 
-namespace CCategoria
-{
-    public class DbCommandHelper
-    {
+namespace CCategoria {
+    
+    public class DbCommandHelper {
+        
         public static void AddParameter(IDbCommand dbCommand, string name, object value) {
 			IDbDataParameter dbDataParameter = dbCommand.CreateParameter();
             dbDataParameter.ParameterName = name;
