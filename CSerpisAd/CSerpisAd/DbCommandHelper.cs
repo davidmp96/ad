@@ -1,9 +1,8 @@
 ﻿using Gtk;
-using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 
-namespace CCategoria {
+namespace Serpis.Ad {
     
     public class DbCommandHelper {
         

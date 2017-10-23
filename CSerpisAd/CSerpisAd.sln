@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSerpisAd", "CSerpisAd\CSerpisAd.csproj", "{880A2A1F-8905-4FAE-BC51-A9E6184D1946}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{880A2A1F-8905-4FAE-BC51-A9E6184D1946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880A2A1F-8905-4FAE-BC51-A9E6184D1946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880A2A1F-8905-4FAE-BC51-A9E6184D1946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880A2A1F-8905-4FAE-BC51-A9E6184D1946}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
