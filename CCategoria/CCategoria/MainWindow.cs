@@ -12,6 +12,7 @@ public partial class MainWindow : Gtk.Window {
         Build();
         Title = "Categoria";
         deleteAction.Sensitive = false;
+        editAction.Sensitive = false;
 
         //CONEXION CON LA BASE DE DATOS
         string connectionString = "server=localhost;database=dbprueba;user=root;password=sistemas";
@@ -30,11 +31,18 @@ public partial class MainWindow : Gtk.Window {
         treeView.Selection.Changed += delegate {
             bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
             deleteAction.Sensitive = hasSelected;
+            editAction.Sensitive = hasSelected;
         };
 
         //BOTÓN NUEVA
         newAction.Activated += delegate {
             new CategoriaWindow();
+        };
+
+		//BOTÓN EDIT
+        editAction.Activated += delegate {
+            object id = getId();
+            new CategoriaWindow(id);
         };
 
         //BOTÓN REFRESH 
