@@ -36,13 +36,15 @@ public partial class MainWindow : Gtk.Window {
 
         //BOTÓN NUEVA
         newAction.Activated += delegate {
-            new CategoriaWindow();
+            Categoria categoria = new Categoria();
+            new CategoriaWindow(categoria);
         };
 
 		//BOTÓN EDIT
         editAction.Activated += delegate {
             object id = getId();
-            new CategoriaWindow(id);
+            Categoria categoria = CategoriaDao.Load(id);
+            new CategoriaWindow(categoria);
         };
 
         //BOTÓN REFRESH 
