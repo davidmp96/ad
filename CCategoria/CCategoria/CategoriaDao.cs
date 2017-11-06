@@ -6,6 +6,7 @@ namespace CCategoria
 {
     public class CategoriaDao {
 
+        public const string SelectAll = "select * from categoria order by id";
         public static Categoria Load(object id) {
             IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
             dbCommand.CommandText = "select * from categoria where id = @id";
@@ -26,7 +27,6 @@ namespace CCategoria
 			DbCommandHelper.AddParameter(dbCommand, "id", id);
 			dbCommand.ExecuteNonQuery();
 		}
-
 
 		public static void Save(Categoria categoria) {
             if (categoria.Id == 0)
