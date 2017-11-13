@@ -53,7 +53,7 @@ namespace CArticulo
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child vbox2.Gtk.Box+BoxChild
-			this.table1 = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
+			this.table1 = new global::Gtk.Table(((uint)(3)), ((uint)(2)), false);
 			this.table1.Name = "table1";
 			this.table1.RowSpacing = ((uint)(6));
 			this.table1.ColumnSpacing = ((uint)(6));
@@ -67,7 +67,6 @@ namespace CArticulo
 			global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.table1[this.entryNombre]));
 			w3.LeftAttach = ((uint)(1));
 			w3.RightAttach = ((uint)(2));
-			w3.XOptions = ((global::Gtk.AttachOptions)(4));
 			w3.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.label1 = new global::Gtk.Label();
@@ -90,7 +89,7 @@ namespace CArticulo
 			// Container child table1.Gtk.Table+TableChild
 			this.label3 = new global::Gtk.Label();
 			this.label3.Name = "label3";
-			this.label3.LabelProp = global::Mono.Unix.Catalog.GetString("Categoria");
+			this.label3.LabelProp = global::Mono.Unix.Catalog.GetString("Categoría");
 			this.table1.Add(this.label3);
 			global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1[this.label3]));
 			w6.TopAttach = ((uint)(2));
@@ -98,11 +97,12 @@ namespace CArticulo
 			w6.XOptions = ((global::Gtk.AttachOptions)(4));
 			w6.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
-			this.spinnButtonPrecio = new global::Gtk.SpinButton(0D, 100D, 1D);
+			this.spinnButtonPrecio = new global::Gtk.SpinButton(0D, 1000000D, 1D);
 			this.spinnButtonPrecio.CanFocus = true;
 			this.spinnButtonPrecio.Name = "spinnButtonPrecio";
 			this.spinnButtonPrecio.Adjustment.PageIncrement = 10D;
 			this.spinnButtonPrecio.ClimbRate = 1D;
+			this.spinnButtonPrecio.Digits = ((uint)(2));
 			this.spinnButtonPrecio.Numeric = true;
 			this.table1.Add(this.spinnButtonPrecio);
 			global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1[this.spinnButtonPrecio]));
@@ -122,8 +122,8 @@ namespace CArticulo
 			{
 				this.Child.ShowAll();
 			}
-			this.DefaultWidth = 400;
-			this.DefaultHeight = 300;
+			this.DefaultWidth = 284;
+			this.DefaultHeight = 157;
 			this.Show();
 		}
 	}

@@ -4,12 +4,10 @@ namespace CArticulo
 {
     public class Articulo
     {
-        public Articulo()
-        {
-        }
-
 		private long id;
 		private string nombre;
+        private decimal precio;
+        private long categoria;
 
 		public long Id
 		{
@@ -23,7 +21,14 @@ namespace CArticulo
 			set { nombre = value; }
 		}
 
-        public decimal Precio { get; set; }
-        public long Categoria { get; set; }
+        public decimal Precio { 
+            get { return precio; }
+            set { precio = value; } 
+        }
+
+        public long Categoria {
+            get { return categoria; }
+            set { categoria = value; }
+		}
     }
 }

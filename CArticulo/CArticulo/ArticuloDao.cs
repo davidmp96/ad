@@ -30,16 +30,12 @@ namespace CArticulo
 
 		public static void Save(Articulo articulo)
 		{
-
-			if (articulo.Id == 0)
-			{
+			if (articulo.Id == 0) {
 				insert(articulo);
 			}
-			else
-			{
+			else {
 				update(articulo);
 			}
-
 		}
 
 		private static void insert(Articulo articulo)
