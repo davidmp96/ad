@@ -17,6 +17,7 @@ namespace CArticulo
 			saveAction.Activated += delegate {
                 articulo.Nombre = entryNombre.Text;
                 articulo.Precio = (decimal)spinnButtonPrecio.Value;
+                articulo.Categoria = Convert.ToInt64(ComboBoxHelper.GetId(comboBoxCategoria));
                 ArticuloDao.Save(articulo);
 				Destroy();
 			};
