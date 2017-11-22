@@ -12,6 +12,7 @@ namespace CArticulo
 			this.Build();
             entryNombre.Text = articulo.Nombre;
             spinnButtonPrecio.Value = (double)articulo.Precio;
+            ComboBoxHelper.Fill(comboBoxCategoria, "select id, nombre from categoria order by nombre", articulo.Categoria);
 
 			saveAction.Activated += delegate {
                 articulo.Nombre = entryNombre.Text;

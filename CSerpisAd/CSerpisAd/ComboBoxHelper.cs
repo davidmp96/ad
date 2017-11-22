@@ -37,5 +37,11 @@ namespace Serpis.Ad
 			}
 			comboBox.SetActiveIter(initialTreeIter);
         }
+
+        public static object GetId(ComboBox comboBox) {
+            TreeIter treeiter;
+            comboBox.GetActiveIter(out treeiter);
+            return comboBox.Model.GetValue(treeiter, 0);
+        }
     }
 }
