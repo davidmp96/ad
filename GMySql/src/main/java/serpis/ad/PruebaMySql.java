@@ -18,7 +18,7 @@ public class PruebaMySql {
 				    		"sistemas");
       
     PreparedStatement preparedStatement=connection.prepareStatement("select * from articulo where id > ?");
-    preparedStatement.setObject(1, 6);
+    preparedStatement.setObject(1, 2);
     ResultSet resultSet=preparedStatement.executeQuery();
     
       System.out.printf("%5s %-30s %10s %9s\n", "id", "nombre", "precio", "categoria");
