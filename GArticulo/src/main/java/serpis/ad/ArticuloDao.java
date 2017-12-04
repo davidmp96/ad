@@ -41,4 +41,18 @@ public class ArticuloDao {
       int affected=insertPreparedStatement.executeUpdate();
       System.out.println("\n Número de líneas afectadas: "+affected+"\n");
     }
+   
+  private static String updateSql = 
+		  "update articulo set nombre = ?, precio = ?, categoria = ? where id = ?";
+  private static PreparedStatement updatePreparedStatement;
+  private static void update(Articulo articulo) throws SQLException {
+	  if (updatePreparedStatement == null)
+	      updatePreparedStatement = connection.prepareStatement(updateSql);
+	      updatePreparedStatement.setObject(1, articulo.getNombre());
+	      updatePreparedStatement.setObject(2, articulo.getPrecio());
+	      updatePreparedStatement.setObject(3, articulo.getCategoria());
+	      updatePreparedStatement.setObject(4, articulo.getId());
+	      int affected= updatePreparedStatement.executeUpdate();
+	      System.out.println("\n Número de líneas afectadas: "+affected+"\n");
+  }
 }
