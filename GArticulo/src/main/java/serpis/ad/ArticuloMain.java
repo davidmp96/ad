@@ -1,79 +1,154 @@
 package serpis.ad;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.sql.SQLException;
+
 
 public class ArticuloMain {
-	
-	public enum Option{Salir, Nuevo, Editar, Eliminar, Consultar, Listar};
-	public enum State{Vacio, Medio, Lleno};
-	
+  
 	private static Scanner scanner = new Scanner(System.in);
-	
-	public static class Articulo {
-		private long id;
-		private String nombre;
-		private BigDecimal precio;
-		private long categoria;
+  
+	private static class Action {
+		private String label;
+		private Runnable runnable;
+    
+    public Action(String label, Runnable runnable) {
+    	this.label = label;
+    	this.runnable = runnable;
+    }
+    
+    public String getLabel() {
+    	return label;
+    }
+    
+    public void execute() {
+    	runnable.run();
+    }
+    }
+  
+	private static class Menu {
+    private List<Action> actions = new ArrayList<>();
+    
+    public Menu add(Action action) {
+      actions.add(action);
+      return this;
+    }
+    
+    private String getOptions() {
+      String options = "";
+      for (int index = 0; index < actions.size(); index ++) 
+        options = options + index;
+      return "[" + options + "]";
+    }
+    
+    private int getOption() {
+      String options = getOptions();
+      while (true) {
+        for (int index = 0; index < actions.size(); index ++) 
+          System.out.printf("%d %s\n", index, actions.get(index).label);
+        
+        System.out.print("Introduce opción: ");
+        String option = scanner.nextLine();
+        if (option.matches(options))
+          return Integer.parseInt(option);
+      }
+    }
+    
+    public void show() {
+      while (true) {
+        int option = getOption();
+        actions.get(option).execute();
+        if (option == 0)
+          return;
+      }
+    }
+  }
+  
+
+	private static void salir() {
+		System.out.println("Saliendo del Programa........");
 	}
-	
-	public static void main(String[] args) {
-		
-		showFields(Articulo.class);
-		
-//		new Menu.add("Salir", null)
-//			.add("Nuevo", () -> nuevo())
-//			.add("Editar",() -> editar())
-//			.run();
-//		
-//	}
-	
-	}
-	
-	private static void showFields(Class<?> type) {
-		for(Field field : type.getDeclaredFields() )
-			System.out.printf("%s %s\n", field.getName(), field.getType().getName());
-	}
-	
-	public static void nuevo() {
-		///TODO implementar
-	}
-		
-	public static <T extends Enum<T>> T scan(Class<T> enumType) {
-		T[] constants = enumType.getEnumConstants();
-		for(int index  = 0; index < constants.length; index++)
-			System.out.printf("%s - %s\n", index, constants[index]);
-		String options = String.format("^[0-%s]$", constants.length - 1);
-		while (true) {
-			System.out.println("Elige una opción: ");
-			String line = scanner.nextLine();
-			if (line.matches(options))
-				return constants[Integer.parseInt(line)];
-			System.out.println("Opcion invalida. Vuelve a introducir");
-			
+
+	private static void nuevo() {
+		Articulo articulo = new Articulo();
+		ArticuloView.get(articulo);
+		try  {
+			ArticuloDao.save(articulo);
+		} catch (SQLException ex) {
+			System.out.println("SQLException: " + ex.getMessage());
 		}
 	}
-		
-	public static int scanInt(String label) {
-		while(true) {
-			try {
-				System.out.println(label);
-				String line = scanner.nextLine();
-				return Integer.parseInt(line);
-			}catch (NumberFormatException ex){
-				System.out.println("Introduce solo numeros");
-			}
+  
+	private static void modificar() {
+	    Articulo articulo = new Articulo();
+	    long id = ArticuloView.getId();
+	    articulo.setId(id);
+	    ArticuloView.get(articulo);
+	    try {
+	    	ArticuloDao.save(articulo);
+	    } catch (SQLException ex) {
+	    	System.out.println("SQLException: " + ex.getMessage());
+	    }
+	}
+
+	private static void eliminar() {
+	    long id = ArticuloView.getId();
+	    try{
+	    ArticuloDao.delete(id);
+	    }catch (SQLException ex) {
+	    	System.out.println("SQLException: " + ex.getMessage());
+	    }
+	}
+
+	private static void consultar() {
+		long id = ArticuloView.getId();
+		Articulo articulo;
+		try {
+			articulo = ArticuloDao.get(id);
+			ArticuloView.show(articulo);
+		} catch (SQLException ex) {
+			System.out.println("SQLException: " + ex.getMessage());
 		}
 	}
-	
-	public static Option scanOption(String label, String options) {
-		while(true) {
-				System.out.println(label);
-				String line = scanner.nextLine();
-				if (line.matches(options))
-						return line;
-				System.out.println("Opcion invalida. Vuelve a introducir");
-		}	
+  
+	private static void listarTodos() {
+		try {
+			List<Articulo> articulos = ArticuloDao.getList(); 
+			ArticuloView.show(articulos);
+		} catch (SQLException ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+	}
+
+	private static Connection connection;
+	private static void init() throws SQLException {
+		connection = DriverManager.getConnection(
+					 "jdbc:mysql://localhost/dbprueba", "root", "sistemas");
+		ArticuloDao.init(connection);
+	}
+  
+	private static void close() throws SQLException {
+		ArticuloDao.close();
+		connection.close();
+	}
+
+	public static void main(String[] args) throws SQLException {
+		init();
+		Menu menu = new Menu()
+				.add(new Action("Salir", ()->salir()))
+				.add(new Action("Nuevo", ()->nuevo()))
+				.add(new Action("Modificar", ()->modificar()))
+				.add(new Action("Eliminar", ()->eliminar()))
+				.add(new Action("Consultar", ()->consultar()))
+				.add(new Action("Listar todos", ()->listarTodos()));
+		menu.show();
+		close();
 	}
 }
+
+
