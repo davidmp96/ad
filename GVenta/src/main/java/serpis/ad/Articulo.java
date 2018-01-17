@@ -14,7 +14,7 @@ public class Articulo {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@ManyToOne
-	@JoinColumn(name="categoria_id")
+	@JoinColumn(name="categoria")
 	private Categoria categoria;
 	private String nombre;
 	private BigDecimal precio;
