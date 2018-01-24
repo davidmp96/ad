@@ -50,5 +50,10 @@ public class Articulo {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("[%s] %s", id, nombre);
+	}
 }
 
