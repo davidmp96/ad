@@ -37,7 +37,8 @@ public class PedidoLinea {
 		return pedido;
 	}
 
-	public void setPedido(Pedido pedido) {
+	//Visibilidad unica para el package
+	void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
 
@@ -47,6 +48,9 @@ public class PedidoLinea {
 
 	public void setArticulo(Articulo articulo) {
 		this.articulo = articulo;
+		precio = articulo.getPrecio();
+		unidades = new BigDecimal(1);
+		total = unidades.multiply(precio);
 	}
 
 	public BigDecimal getPrecio() {
@@ -71,5 +75,10 @@ public class PedidoLinea {
 
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("[%s] %s (%s)", id, articulo.getNombre(), pedido);
 	}
 }
